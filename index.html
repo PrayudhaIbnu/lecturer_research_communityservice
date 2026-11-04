@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Penelitian & Pengabdian Dosen - UIN Sunan Kalijaga</title>
+    <style>
+      /* Scope Base Styling */
+      #research-app {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        color: #1e293b;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 24px 16px;
+        box-sizing: border-box;
+      }
+
+      #research-app * {
+        box-sizing: border-box;
+      }
+
+      /* Language Switcher Bar */
+      .lang-switcher-wrapper {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .lang-switcher {
+        display: inline-flex;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 3px;
+        gap: 2px;
+      }
+
+      .lang-btn {
+        border: none;
+        background: transparent;
+        color: #64748b;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .lang-btn.active {
+        background: #ffffff;
+        color: #01747b;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Summary Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .stat-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 4px;
+        background: #01747b;
+      }
+
+      .stat-card.orange-accent::before {
+        background: #f08619;
+      }
+
+      .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .stat-icon.teal {
+        background-color: #e6f7f7;
+        color: #01747b;
+      }
+
+      .stat-icon.orange {
+        background-color: #fff7ed;
+        color: #f08619;
+      }
+
+      .stat-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* Controls & Filters Bar */
+      .filter-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .search-box {
+        grid-column: 1 / -1;
+      }
+
+      .filter-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 13.5px;
+        color: #1e293b;
+        background-color: #ffffff;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .filter-control:focus {
+        border-color: #01747b;
+        box-shadow: 0 0 0 3px rgba(1, 116, 123, 0.1);
+      }
+
+      /* Lecturer Cards & Activity Tables */
+      .lecturer-block {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .lecturer-block:hover {
+        box-shadow: 0 8px 20px rgba(1, 116, 123, 0.08);
+      }
+
+      .lecturer-header {
+        padding: 20px 24px;
+        background-color: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .lecturer-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 4px 0;
+      }
+
+      .lecturer-expertise {
+        font-size: 12.5px;
+        color: #01747b;
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .sinta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #ffffff;
+        color: #f08619;
+        border: 1px solid #f08619;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .sinta-btn:hover {
+        background-color: #f08619;
+        color: #ffffff;
+      }
+
+      /* Data Table Styling */
+      .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 13px;
+      }
+
+      .activity-table th {
+        background-color: #ffffff;
+        color: #475569;
+        font-weight: 600;
+        padding: 12px 20px;
+        border-bottom: 2px solid #f1f5f9;
+        white-space: nowrap;
+      }
+
+      .activity-table td {
+        padding: 14px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        line-height: 1.5;
+      }
+
+      .activity-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .activity-table tr:hover td {
+        background-color: #f8fafc;
+      }
+
+      /* Badges */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .badge-research {
+        background-color: #e0f2fe;
+        color: #0369a1;
+      }
+
+      .badge-service {
+        background-color: #fef3c7;
+        color: #b45309;
+      }
+
+      .badge-level {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+      }
+
+      .link-action {
+        color: #01747b;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .link-action:hover {
+        text-decoration: underline;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+      }
+
+      @media (max-width: 640px) {
+        .lecturer-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .activity-table th,
+        .activity-table td {
+          padding: 10px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="research-app">
+      <!-- Language Switcher Bar -->
+      <div class="lang-switcher-wrapper">
+        <div class="lang-switcher">
+          <button type="button" class="lang-btn active" id="btn-lang-id">ID</button>
+          <button type="button" class="lang-btn" id="btn-lang-en">EN</button>
+        </div>
+      </div>
+
+      <!-- Summary Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon teal">
+            <svg
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-lecturers">0</div>
+            <div class="stat-label" id="lbl-stat-lecturers">Total Dosen</div>
+          </div>
+        </div>
+
+        <div class="stat-card orange-accent">
+          <div class="stat-icon orange">
+            <svg
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-activities">0</div>
+            <div class="stat-label" id="lbl-stat-activities">Total Kegiatan Terdaftar</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon teal">
+            <svg
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-period">-</div>
+            <div class="stat-label" id="lbl-stat-period">Periode Data</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters Container -->
+      <div class="filter-card">
+        <div class="filter-grid">
+          <div class="search-box">
+            <input
+              type="text"
+              id="search-input"
+              class="filter-control"
+              placeholder="Cari judul kegiatan, topik, atau kata kunci..."
+            />
+          </div>
+          <div>
+            <select id="lecturer-filter" class="filter-control">
+              <option value="" id="opt-all-lecturers">Semua Dosen</option>
+            </select>
+          </div>
+          <div>
+            <select id="area-filter" class="filter-control">
+              <option value="" id="opt-all-areas">Semua Bidang (Research/PKM)</option>
+              <option value="Research" id="opt-research">Research (Penelitian)</option>
+              <option value="Community Service" id="opt-service">
+                Community Service (Pengabdian)
+              </option>
+            </select>
+          </div>
+          <div>
+            <select id="level-filter" class="filter-control">
+              <option value="" id="opt-all-levels">Semua Tingkatan</option>
+              <option value="Regional">Regional</option>
+              <option value="National">National</option>
+              <option value="International">International</option>
+            </select>
+          </div>
+          <div>
+            <select id="year-filter" class="filter-control">
+              <option value="" id="opt-all-years">Semua Tahun</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Listing -->
+      <div id="content-container"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let rawData = null;
+        let currentLang = "id"; // Default Bahasa Indonesia
+
+        // Dictionary Translation UI
+        const i18n = {
+          id: {
+            statLecturers: "Total Dosen",
+            statActivities: "Total Kegiatan Terdaftar",
+            statPeriod: "Periode Data",
+            searchPlaceholder: "Cari judul kegiatan, topik, atau kata kunci...",
+            allLecturers: "Semua Dosen",
+            allAreas: "Semua Bidang (Research/PKM)",
+            optResearch: "Research (Penelitian)",
+            optService: "Community Service (Pengabdian)",
+            allLevels: "Semua Tingkatan",
+            allYears: "Semua Tahun",
+            thTitle: "Judul Kegiatan",
+            thArea: "Bidang",
+            thLevel: "Tingkat",
+            thYear: "Tahun",
+            thLink: "Tautan Ref",
+            sintaBtn: "Profil SINTA",
+            openLink: "Buka Link &rarr;",
+            emptyTitle: "Data Tidak Ditemukan",
+            emptyDesc: "Coba sesuaikan kata kunci atau kombinasi filter Anda.",
+            errorTitle: "Gagal Memuat Data",
+            errorDesc: "Pastikan file <code>data.json</code> berada dalam direktori server yang sama."
+          },
+          en: {
+            statLecturers: "Total Faculty",
+            statActivities: "Total Registered Activities",
+            statPeriod: "Data Period",
+            searchPlaceholder: "Search activity title, topic, or keywords...",
+            allLecturers: "All Lecturers",
+            allAreas: "All Categories (Research/Service)",
+            optResearch: "Research",
+            optService: "Community Service",
+            allLevels: "All Levels",
+            allYears: "All Years",
+            thTitle: "Activity Title",
+            thArea: "Category",
+            thLevel: "Level",
+            thYear: "Year",
+            thLink: "Ref Link",
+            sintaBtn: "SINTA Profile",
+            openLink: "Open Link &rarr;",
+            emptyTitle: "No Data Found",
+            emptyDesc: "Try adjusting your search keywords or filter combinations.",
+            errorTitle: "Failed to Load Data",
+            errorDesc: "Ensure that <code>data.json</code> is located in the same server directory."
+          }
+        };
+
+        // Fetch and Load JSON Data
+        fetch("data.json")
+          .then((response) => {
+            if (!response.ok) throw new Error("Gagal memuat file data.json");
+            return response.json();
+          })
+          .then((data) => {
+            rawData = data;
+            initApp(data);
+          })
+          .catch((error) => {
+            console.error(error);
+            const t = i18n[currentLang];
+            document.getElementById("content-container").innerHTML = `
+              <div class="empty-state">
+                <h3 style="color: #ef4444; margin-top:0;">${t.errorTitle}</h3>
+                <p>${t.errorDesc}</p>
+              </div>
+            `;
+          });
+
+        function initApp(data) {
+          if (data.document_info) {
+            document.getElementById("stat-period").textContent = data.document_info.period;
+          }
+
+          populateFilters(data);
+          updateLanguageUI();
+          filterAndRender();
+
+          // Event Listeners Filter
+          document.getElementById("search-input").addEventListener("input", () => filterAndRender());
+          document.getElementById("lecturer-filter").addEventListener("change", () => filterAndRender());
+          document.getElementById("area-filter").addEventListener("change", () => filterAndRender());
+          document.getElementById("level-filter").addEventListener("change", () => filterAndRender());
+          document.getElementById("year-filter").addEventListener("change", () => filterAndRender());
+
+          // Event Listeners Switcher Bahasa
+          document.getElementById("btn-lang-id").addEventListener("click", () => switchLanguage("id"));
+          document.getElementById("btn-lang-en").addEventListener("click", () => switchLanguage("en"));
+        }
+
+        function switchLanguage(lang) {
+          if (currentLang === lang) return;
+          currentLang = lang;
+
+          document.getElementById("btn-lang-id").classList.toggle("active", lang === "id");
+          document.getElementById("btn-lang-en").classList.toggle("active", lang === "en");
+
+          updateLanguageUI();
+          filterAndRender();
+        }
+
+        function updateLanguageUI() {
+          const t = i18n[currentLang];
+
+          document.getElementById("lbl-stat-lecturers").textContent = t.statLecturers;
+          document.getElementById("lbl-stat-activities").textContent = t.statActivities;
+          document.getElementById("lbl-stat-period").textContent = t.statPeriod;
+
+          document.getElementById("search-input").placeholder = t.searchPlaceholder;
+          document.getElementById("opt-all-lecturers").textContent = t.allLecturers;
+          document.getElementById("opt-all-areas").textContent = t.allAreas;
+          document.getElementById("opt-research").textContent = t.optResearch;
+          document.getElementById("opt-service").textContent = t.optService;
+          document.getElementById("opt-all-levels").textContent = t.allLevels;
+          document.getElementById("opt-all-years").textContent = t.allYears;
+        }
+
+        function populateFilters(data) {
+          const lecturerSelect = document.getElementById("lecturer-filter");
+          const yearSelect = document.getElementById("year-filter");
+
+          // Clean Old Dynamic Options
+          lecturerSelect.innerHTML = `<option value="" id="opt-all-lecturers">${i18n[currentLang].allLecturers}</option>`;
+          yearSelect.innerHTML = `<option value="" id="opt-all-years">${i18n[currentLang].allYears}</option>`;
+
+          // Populate Lecturer Dropdown
+          data.lecturers.forEach((lec) => {
+            const opt = document.createElement("option");
+            opt.value = lec.name;
+            opt.textContent = lec.name;
+            lecturerSelect.appendChild(opt);
+          });
+
+          // Populate Year Dropdown
+          if (data.summary && data.summary.years_covered) {
+            data.summary.years_covered
+              .slice()
+              .sort((a, b) => b - a)
+              .forEach((year) => {
+                const opt = document.createElement("option");
+                opt.value = year;
+                opt.textContent = year;
+                yearSelect.appendChild(opt);
+              });
+          }
+        }
+
+        function filterAndRender() {
+          if (!rawData) return;
+
+          const searchValue = document.getElementById("search-input").value.toLowerCase().trim();
+          const selectedLecturer = document.getElementById("lecturer-filter").value;
+          const selectedArea = document.getElementById("area-filter").value;
+          const selectedLevel = document.getElementById("level-filter").value;
+          const selectedYear = document.getElementById("year-filter").value;
+
+          const filteredLecturers = rawData.lecturers
+            .map((lec) => {
+              if (selectedLecturer && lec.name !== selectedLecturer) {
+                return null;
+              }
+
+              const matchingActivities = lec.activities.filter((act) => {
+                const matchArea = !selectedArea || act.area === selectedArea;
+                const matchLevel = !selectedLevel || act.level === selectedLevel;
+                const matchYear = !selectedYear || act.year.toString() === selectedYear;
+                const matchSearch =
+                  !searchValue ||
+                  act.title.toLowerCase().includes(searchValue) ||
+                  lec.name.toLowerCase().includes(searchValue) ||
+                  lec.expertise.toLowerCase().includes(searchValue);
+
+                return matchArea && matchLevel && matchYear && matchSearch;
+              });
+
+              if (matchingActivities.length === 0) return null;
+
+              return {
+                ...lec,
+                activities: matchingActivities,
+              };
+            })
+            .filter(Boolean);
+
+          renderView(filteredLecturers);
+        }
+
+        function renderView(lecturersList) {
+          const container = document.getElementById("content-container");
+          container.innerHTML = "";
+          const t = i18n[currentLang];
+
+          let totalActivitiesCount = 0;
+          let totalLecturersCount = lecturersList.length;
+
+          if (lecturersList.length === 0) {
+            container.innerHTML = `
+              <div class="empty-state">
+                <h3>${t.emptyTitle}</h3>
+                <p>${t.emptyDesc}</p>
+              </div>
+            `;
+            document.getElementById("stat-lecturers").textContent = "0";
+            document.getElementById("stat-activities").textContent = "0";
+            return;
+          }
+
+          lecturersList.forEach((lec) => {
+            totalActivitiesCount += lec.activities.length;
+
+            const block = document.createElement("div");
+            block.className = "lecturer-block";
+
+            const sintaBtnHtml = lec.sinta_profile
+              ? `<a href="${lec.sinta_profile}" class="sinta-btn" target="_blank" rel="noopener">
+                   ${t.sintaBtn} 
+                   <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                 </a>`
+              : "";
+
+            let tableRows = lec.activities
+              .map((act, index) => {
+                const badgeClass = act.area === "Research" ? "badge-research" : "badge-service";
+                const linkHtml = act.link
+                  ? `<a href="${act.link}" class="link-action" target="_blank" rel="noopener">${t.openLink}</a>`
+                  : `<span style="color:#94a3b8;">-</span>`;
+
+                return `
+                  <tr>
+                    <td style="width: 40px; text-align: center; color: #94a3b8;">${index + 1}</td>
+                    <td style="font-weight: 500;">${act.title}</td>
+                    <td><span class="badge ${badgeClass}">${act.area}</span></td>
+                    <td><span class="badge badge-level">${act.level}</span></td>
+                    <td><strong>${act.year}</strong></td>
+                  </tr>
+                `;
+              })
+              .join("");
+
+            block.innerHTML = `
+              <div class="lecturer-header">
+                <div>
+                  <h3 class="lecturer-name">${lec.name}</h3>
+                  <p class="lecturer-expertise">${lec.expertise}</p>
+                </div>
+                ${sintaBtnHtml}
+              </div>
+              <div class="table-wrapper">
+                <table class="activity-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 40px; text-align: center;">#</th>
+                      <th>${t.thTitle}</th>
+                      <th>${t.thArea}</th>
+                      <th>${t.thLevel}</th>
+                      <th>${t.thYear}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${tableRows}
+                  </tbody>
+                </table>
+              </div>
+            `;
+
+            container.appendChild(block);
+          });
+
+          // Update Counter Cards
+          document.getElementById("stat-lecturers").textContent = totalLecturersCount;
+          document.getElementById("stat-activities").textContent = totalActivitiesCount;
+        }
+      });
+    </script>
+  </body>
+</html>
