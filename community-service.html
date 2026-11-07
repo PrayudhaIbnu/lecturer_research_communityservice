@@ -349,7 +349,7 @@
       document.addEventListener("DOMContentLoaded", () => {
         let rawData = null;
 
-        fetch("data.json")
+        fetch("https://json.link/PTNUF64Tmn.json")
           .then((response) => {
             if (!response.ok) throw new Error("Gagal memuat file data.json");
             return response.json();

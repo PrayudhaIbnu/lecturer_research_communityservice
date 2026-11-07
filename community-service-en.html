@@ -1,0 +1,539 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lecturers Community Service List - UIN Sunan Kalijaga</title>
+    <style>
+      /* Scope Base Styling */
+      #service-app {
+        font-family:
+          "Inter",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        color: #1e293b;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 24px 16px;
+        box-sizing: border-box;
+      }
+
+      #service-app * {
+        box-sizing: border-box;
+      }
+
+      /* Summary Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .stat-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 4px;
+        background: #f08619;
+      }
+
+      .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background-color: #fff7ed;
+        color: #f08619;
+      }
+
+      .stat-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+        line-height: 1.2;
+      }
+
+      .stat-label {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* Controls & Filters Bar */
+      .filter-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+
+      .search-box {
+        grid-column: 1 / -1;
+      }
+
+      .filter-control {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 13.5px;
+        color: #1e293b;
+        background-color: #ffffff;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .filter-control:focus {
+        border-color: #f08619;
+        box-shadow: 0 0 0 3px rgba(240, 134, 25, 0.1);
+      }
+
+      /* Lecturer Cards & Activity Tables */
+      .lecturer-block {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .lecturer-block:hover {
+        box-shadow: 0 8px 20px rgba(240, 134, 25, 0.08);
+      }
+
+      .lecturer-header {
+        padding: 20px 24px;
+        background-color: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .lecturer-name {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 4px 0;
+      }
+
+      .lecturer-expertise {
+        font-size: 12.5px;
+        color: #f08619;
+        font-weight: 500;
+        margin: 0;
+      }
+
+      .sinta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: #ffffff;
+        color: #f08619;
+        border: 1px solid #f08619;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      .sinta-btn:hover {
+        background-color: #f08619;
+        color: #ffffff;
+      }
+
+      /* Data Table Styling */
+      .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 13px;
+      }
+
+      .activity-table th {
+        background-color: #ffffff;
+        color: #475569;
+        font-weight: 600;
+        padding: 12px 20px;
+        border-bottom: 2px solid #f1f5f9;
+        white-space: nowrap;
+      }
+
+      .activity-table td {
+        padding: 14px 20px;
+        border-bottom: 1px solid #f1f5f9;
+        color: #334155;
+        line-height: 1.5;
+      }
+
+      .activity-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .activity-table tr:hover td {
+        background-color: #f8fafc;
+      }
+
+      /* Badges */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .badge-service {
+        background-color: #fef3c7;
+        color: #b45309;
+      }
+
+      .badge-level {
+        background-color: #f1f5f9;
+        color: #475569;
+        border: 1px solid #e2e8f0;
+      }
+
+      .link-action {
+        color: #f08619;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .link-action:hover {
+        text-decoration: underline;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
+      }
+
+      @media (max-width: 640px) {
+        .lecturer-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .activity-table th,
+        .activity-table td {
+          padding: 10px 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="service-app">
+      <!-- Summary Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-lecturers">0</div>
+            <div class="stat-label">Total Lecturers Volunteers</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-activities">0</div>
+            <div class="stat-label">Total Registered Community Services</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+          <div>
+            <div class="stat-value" id="stat-period">-</div>
+            <div class="stat-label">Data Period</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters Container -->
+      <div class="filter-card">
+        <div class="filter-grid">
+          <div class="search-box">
+            <input
+              type="text"
+              id="search-input"
+              class="filter-control"
+              placeholder="Search community service title, topic, or lecturer name..."
+            />
+          </div>
+          <div>
+            <select id="lecturer-filter" class="filter-control">
+              <option value="">All Lecturers</option>
+            </select>
+          </div>
+          <div>
+            <select id="level-filter" class="filter-control">
+              <option value="">All Levels</option>
+              <option value="Regional">Regional</option>
+              <option value="National">National</option>
+              <option value="International">International</option>
+            </select>
+          </div>
+          <div>
+            <select id="year-filter" class="filter-control">
+              <option value="">All Years</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content Listing -->
+      <div id="content-container"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let rawData = null;
+
+        fetch("https://json.link/PTNUF64Tmn.json")
+          .then((response) => {
+            if (!response.ok) throw new Error("Failed to load data.json file");
+            return response.json();
+          })
+          .then((data) => {
+            rawData = data;
+            initApp(data);
+          })
+          .catch((error) => {
+            console.error(error);
+            document.getElementById("content-container").innerHTML = `
+              <div class="empty-state">
+                <h3 style="color: #ef4444; margin-top:0;">Failed to Load Data</h3>
+                <p>Ensure that the <code>data.json</code> file is located in the same server directory.</p>
+              </div>
+            `;
+          });
+
+        function initApp(data) {
+          if (data.document_info) {
+            document.getElementById("stat-period").textContent = data.document_info.period;
+          }
+
+          populateFilters(data);
+          filterAndRender();
+
+          document.getElementById("search-input").addEventListener("input", filterAndRender);
+          document.getElementById("lecturer-filter").addEventListener("change", filterAndRender);
+          document.getElementById("level-filter").addEventListener("change", filterAndRender);
+          document.getElementById("year-filter").addEventListener("change", filterAndRender);
+        }
+
+        function populateFilters(data) {
+          const lecturerSelect = document.getElementById("lecturer-filter");
+          const yearSelect = document.getElementById("year-filter");
+
+          data.lecturers.forEach((lec) => {
+            const hasService = lec.activities.some((act) => act.area === "Community Service");
+            if (hasService) {
+              const opt = document.createElement("option");
+              opt.value = lec.name;
+              opt.textContent = lec.name;
+              lecturerSelect.appendChild(opt);
+            }
+          });
+
+          if (data.summary && data.summary.years_covered) {
+            data.summary.years_covered
+              .slice()
+              .sort((a, b) => b - a)
+              .forEach((year) => {
+                const opt = document.createElement("option");
+                opt.value = year;
+                opt.textContent = year;
+                yearSelect.appendChild(opt);
+              });
+          }
+        }
+
+        function filterAndRender() {
+          if (!rawData) return;
+
+          const searchValue = document.getElementById("search-input").value.toLowerCase().trim();
+          const selectedLecturer = document.getElementById("lecturer-filter").value;
+          const selectedLevel = document.getElementById("level-filter").value;
+          const selectedYear = document.getElementById("year-filter").value;
+
+          const filteredLecturers = rawData.lecturers
+            .map((lec) => {
+              if (selectedLecturer && lec.name !== selectedLecturer) {
+                return null;
+              }
+
+              // Filter activities with "Community Service" area only
+              const matchingActivities = lec.activities.filter((act) => {
+                const isService = act.area === "Community Service";
+                const matchLevel = !selectedLevel || act.level === selectedLevel;
+                const matchYear = !selectedYear || act.year.toString() === selectedYear;
+                const matchSearch =
+                  !searchValue ||
+                  act.title.toLowerCase().includes(searchValue) ||
+                  lec.name.toLowerCase().includes(searchValue) ||
+                  lec.expertise.toLowerCase().includes(searchValue);
+
+                return isService && matchLevel && matchYear && matchSearch;
+              });
+
+              if (matchingActivities.length === 0) return null;
+
+              return {
+                ...lec,
+                activities: matchingActivities,
+              };
+            })
+            .filter(Boolean);
+
+          renderView(filteredLecturers);
+        }
+
+        function renderView(lecturersList) {
+          const container = document.getElementById("content-container");
+          container.innerHTML = "";
+
+          let totalActivitiesCount = 0;
+          let totalLecturersCount = lecturersList.length;
+
+          if (lecturersList.length === 0) {
+            container.innerHTML = `
+              <div class="empty-state">
+                <h3>No Community Service Data Found</h3>
+                <p>Try adjusting your search keywords or filter combinations.</p>
+              </div>
+            `;
+            document.getElementById("stat-lecturers").textContent = "0";
+            document.getElementById("stat-activities").textContent = "0";
+            return;
+          }
+
+          lecturersList.forEach((lec) => {
+            totalActivitiesCount += lec.activities.length;
+
+            const block = document.createElement("div");
+            block.className = "lecturer-block";
+
+            const sintaBtnHtml = lec.sinta_profile
+              ? `<a href="${lec.sinta_profile}" class="sinta-btn" target="_blank" rel="noopener">
+                   SINTA Profile 
+                   <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                 </a>`
+              : "";
+
+            let tableRows = lec.activities
+              .map((act, index) => {
+                const linkHtml = act.link
+                  ? `<a href="${act.link}" class="link-action" target="_blank" rel="noopener">Open Link &rarr;</a>`
+                  : `<span style="color:#94a3b8;">-</span>`;
+
+                return `
+                  <tr>
+                    <td style="width: 40px; text-align: center; color: #94a3b8;">${index + 1}</td>
+                    <td style="font-weight: 500;">${act.title}</td>
+                    <td><span class="badge badge-service">Community Service</span></td>
+                    <td><span class="badge badge-level">${act.level}</span></td>
+                    <td><strong>${act.year}</strong></td>
+                    <td>${linkHtml}</td>
+                  </tr>
+                `;
+              })
+              .join("");
+
+            block.innerHTML = `
+              <div class="lecturer-header">
+                <div>
+                  <h3 class="lecturer-name">${lec.name}</h3>
+                  <p class="lecturer-expertise">${lec.expertise}</p>
+                </div>
+                ${sintaBtnHtml}
+              </div>
+              <div class="table-wrapper">
+                <table class="activity-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 40px; text-align: center;">#</th>
+                      <th>Activity Title</th>
+                      <th>Category</th>
+                      <th>Level</th>
+                      <th>Year</th>
+                      <th>Ref Link</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${tableRows}
+                  </tbody>
+                </table>
+              </div>
+            `;
+
+            container.appendChild(block);
+          });
+
+          document.getElementById("stat-lecturers").textContent = totalLecturersCount;
+          document.getElementById("stat-activities").textContent = totalActivitiesCount;
+        }
+      });
+    </script>
+  </body>
+</html>
