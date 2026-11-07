@@ -8,7 +8,7 @@
   "lecturers": [
     {
       "name": "Drs. Nur Untoro, M.Si.",
-      "expertise": "Physics Laboratory and Experimental Physics",
+      "expertise": "Physics Lab & Experiments",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6797740/",
       "activities": [
         {
@@ -111,7 +111,7 @@
     },
     {
       "name": "Dr. Murtono, M.Si.",
-      "expertise": "Assessment and Evaluation in Physics",
+      "expertise": "Physics Learning Evaluation",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6793098/",
       "activities": [
         {
@@ -540,7 +540,7 @@
     },
     {
       "name": "Joko Purwanto, S.Si., M.Sc.",
-      "expertise": "Physics Education",
+      "expertise": "Physics Instruction & Pedagogy",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6732606/",
       "activities": [
         {
@@ -714,7 +714,7 @@
     },
     {
       "name": "Rachmad Resmiyanto, M.Sc.",
-      "expertise": "History and Philosophy of Physics",
+      "expertise": "History & Philosophy of Physics Education",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6706692/",
       "activities": [
         {
@@ -897,7 +897,7 @@
     },
     {
       "name": "Nira Nurwulandari, M.Pd.",
-      "expertise": "Innovations in Physics Education",
+      "expertise": "Innovation in Physics Learning",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6200707",
       "activities": [
         {
@@ -1024,7 +1024,7 @@
     },
     {
       "name": "Ari Cahya Mawardi, M.Pd.",
-      "expertise": "Physics Educational Technology",
+      "expertise": "Educational Technology in Physics",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6797132",
       "activities": [
         {
@@ -1167,7 +1167,7 @@
     },
     {
       "name": "Puspo Rohmi, M.Pd.",
-      "expertise": "Integrated Science Education",
+      "expertise": "Integrated Science Learning",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6725043",
       "activities": [
         {
@@ -1549,7 +1549,7 @@
     },
     {
       "name": "Himawan Putranta, M.Pd.",
-      "expertise": "Physics Teaching Models and Instructional Materials",
+      "expertise": "Physics Teaching Models & Materials",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/6773679",
       "activities": [
         {
@@ -1732,9 +1732,17 @@
     },
     {
       "name": "Nur Arviyanto Himawan, M.Pd.",
-      "expertise": "Physics Education",
+      "expertise": "Thinking Skills in Physics Learning",
       "sinta_profile": "https://sinta.kemdiktisaintek.go.id/authors/profile/7013724",
       "activities": [
+        {
+          "no": 0,
+          "area": "Research",
+          "title": "Predictors of Physics Learning Outcomes: The Role of Prior Knowledge and Growth Mindset",
+          "level": "International",
+          "year": 2026,
+          "link": "https://scholar.google.com/citations?view_op=view_citation&hl=id&user=sdREZVsAAAAJ&sortby=pubdate&citation_for_view=sdREZVsAAAAJ:hqOjcs7Dif8C"
+        },
         {
           "no": 1,
           "area": "Community Service",
@@ -1764,7 +1772,7 @@
   ],
   "summary": {
     "total_lecturers": 11,
-    "total_activities": 241,
+    "total_activities": 242,
     "years_covered": [2023, 2024, 2025, 2026],
     "activity_types": ["Research", "Community Service"]
   }

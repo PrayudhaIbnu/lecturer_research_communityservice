@@ -349,7 +349,7 @@
       document.addEventListener("DOMContentLoaded", () => {
         let rawData = null;
 
-        fetch("data.json")
+        fetch("https://json.link/PTNUF64Tmn.json")
           .then((response) => {
             if (!response.ok) throw new Error("Gagal memuat file data.json");
             return response.json();
@@ -491,7 +491,6 @@
                   <tr>
                     <td style="width: 40px; text-align: center; color: #94a3b8;">${index + 1}</td>
                     <td style="font-weight: 500;">${act.title}</td>
-                    <td><span class="badge badge-research">Penelitian</span></td>
                     <td><span class="badge badge-level">${act.level}</span></td>
                     <td><strong>${act.year}</strong></td>
                     <td>${linkHtml}</td>
@@ -514,7 +513,6 @@
                     <tr>
                       <th style="width: 40px; text-align: center;">#</th>
                       <th>Judul Penelitian</th>
-                      <th>Bidang</th>
                       <th>Tingkat</th>
                       <th>Tahun</th>
                       <th>Tautan Ref</th>
